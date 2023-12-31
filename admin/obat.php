@@ -9,7 +9,7 @@ $obat = mysqli_query($conn, "SELECT * FROM obat");
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <link rel="icon" href="../assets/img/logo.png" type="image/png">
+    <link rel="icon" href="../assets/home/img/favicon.png" type="image/png">
     <link rel="stylesheet" href="../assets/css/bootstrap1.min.css" />
     <link rel="stylesheet" href="../assets/vendors/themefy_icon/themify-icons.css" />
     <link rel="stylesheet" href="../assets/vendors/niceselect/css/nice-select.css" />

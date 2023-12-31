@@ -9,7 +9,7 @@ $riwayat = mysqli_query($conn, "SELECT pasien.nama, alamat, keluhan, catatan FRO
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <link rel="icon" href="../assets/img/logo.png" type="image/png">
+    <link rel="icon" href="../assets/home/img/favicon.png" type="image/png">
     <link rel="stylesheet" href="../assets/css/bootstrap1.min.css" />
     <link rel="stylesheet" href="../assets/vendors/themefy_icon/themify-icons.css" />
     <link rel="stylesheet" href="../assets/vendors/niceselect/css/nice-select.css" />
@@ -85,6 +85,7 @@ $riwayat = mysqli_query($conn, "SELECT pasien.nama, alamat, keluhan, catatan FRO
                                                     <th scope="col">Alamat</th>
                                                     <th scope="col">Keluhan</th>
                                                     <th scope="col">Catatan</th>
+                                                    <th scope="col">Aksi</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -98,6 +99,9 @@ $riwayat = mysqli_query($conn, "SELECT pasien.nama, alamat, keluhan, catatan FRO
                                                         <td><?php echo $row['alamat'] ?></td>
                                                         <td><?php echo $row['keluhan'] ?></td>
                                                         <td><?php echo $row['catatan'] ?></td>
+                                                        <td>
+                                                            <a href="#" class="btn btn-sm" data-bs-toggle="modal" data-bs-target="#edit<?= $no ?>"><i class='ti-eye'></i> Detail Riwayat</a>
+                                                        </td>
                                                     </tr>
                                                 <?php } ?>
                                             </tbody>

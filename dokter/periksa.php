@@ -1,6 +1,6 @@
 <?php
 include '../koneksi.php';
-$periksa = mysqli_query($conn, "SELECT pasien.nama, daftar_poli.id, tgl_periksa, catatan, biaya_periksa FROM periksa JOIN daftar_poli ON periksa.id_daftar_poli = daftar_poli.id JOIN pasien ON daftar_poli.id_pasien = pasien.id");
+$periksa = mysqli_query($conn, "SELECT pasien.nama, daftar_poli.keluhan, DATE_FORMAT(periksa.tgl_periksa, '%Y-%m-%d') as formatted_tanggal FROM periksa JOIN daftar_poli ON periksa.id_daftar_poli = daftar_poli.id JOIN pasien ON daftar_poli.id_pasien = pasien.id");
 ?>
 
 <!DOCTYPE html>
@@ -9,7 +9,7 @@ $periksa = mysqli_query($conn, "SELECT pasien.nama, daftar_poli.id, tgl_periksa,
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <link rel="icon" href="../assets/img/logo.png" type="image/png">
+    <link rel="icon" href="../assets/home/img/favicon.png" type="image/png">
     <link rel="stylesheet" href="../assets/css/bootstrap1.min.css" />
     <link rel="stylesheet" href="../assets/vendors/themefy_icon/themify-icons.css" />
     <link rel="stylesheet" href="../assets/vendors/niceselect/css/nice-select.css" />
@@ -82,10 +82,9 @@ $periksa = mysqli_query($conn, "SELECT pasien.nama, daftar_poli.id, tgl_periksa,
                                                 <tr>
                                                     <th scope="col">No</th>
                                                     <th scope="col">Nama</th>
-                                                    <th scope="col">ID Periksa</th>
                                                     <th scope="col">Tanggal</th>
-                                                    <th scope="col">Catatan</th>
-                                                    <th scope="col">Biaya</th>
+                                                    <th scope="col">Keluhan</th>
+                                                    <th scope="col">Aksi</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -96,10 +95,12 @@ $periksa = mysqli_query($conn, "SELECT pasien.nama, daftar_poli.id, tgl_periksa,
                                                     <tr>
                                                         <td><?php echo $no++ ?></td>
                                                         <td><?php echo $row['nama'] ?></td>
-                                                        <td><?php echo $row['id'] ?></td>
-                                                        <td><?php echo $row['tgl_periksa'] ?></td>
-                                                        <td><?php echo $row['catatan'] ?></td>
-                                                        <td><?php echo $row['biaya_periksa'] ?></td>
+                                                        <td><?php echo $row['formatted_tanggal'] ?></td>
+                                                        <td><?php echo $row['keluhan'] ?></td>
+                                                        <td>
+                                                            <a href="#" class="btn btn-sm" data-bs-toggle="modal" data-bs-target="#edit<?= $no ?>"><i class='fas fa-edit'></i> EDIT</a>
+                                                            <a href="#" class="btn btn-sm" data-toggle="modal" name="hapus" data-target="#hapus<?= $no ?>"><i class='ti-trash'></i>HAPUS</a>
+                                                        </td>
                                                     </tr>
                                                 <?php } ?>
                                             </tbody>

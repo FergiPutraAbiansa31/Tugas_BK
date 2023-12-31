@@ -5,7 +5,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <title>Login</title>
-    <link rel="icon" href="../assets/img/logo.png" type="image/png">
+    <link rel="icon" href="../assets/home/img/favicon.png" type="image/png">
     <link rel="stylesheet" href="../assets/css/bootstrap1.min.css" />
     <link rel="stylesheet" href="../assets/vendors/themefy_icon/themify-icons.css" />
     <link rel="stylesheet" href="../assets/vendors/font_awesome/css/all.min.css" />
@@ -57,7 +57,7 @@
                             </div>
                             <div class="row">
                                 <div class="col-md-6">
-                                    <a href="#" class="btn btn_1 btn-block">Back</a>
+                                    <a href="../index.php" class="btn btn_1 btn-block">Back</a>
                                 </div>
                                 <div class="col-md-6">
                                     <button type="submit" class="btn btn_1 btn-block">Login</button>
