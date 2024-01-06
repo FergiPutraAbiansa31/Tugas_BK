@@ -25,13 +25,11 @@
                         <img src="../assets/img/client_img.png" alt="#">
                         <div class="profile_info_iner">
                             <div class="profile_author_name">
-                                <p>Neurologist </p>
-                                <h5>Dr. Robar Smith</h5>
+                                <h5><?php echo $username ?></h5>
                             </div>
                             <div class="profile_info_details">
                                 <a href="#">My Profile </a>
-                                <a href="#">Settings</a>
-                                <a href="#">Log Out </a>
+                                <a href="../components/logout.php">Log Out </a>
                             </div>
                         </div>
                     </div>

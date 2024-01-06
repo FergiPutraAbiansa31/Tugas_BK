@@ -29,10 +29,10 @@
                         <div class="collapse navbar-collapse main-menu-item justify-content-end" id="navbarSupportedContent">
                             <ul class="navbar-nav align-items-center">
                                 <li class="nav-item active">
-                                    <a class="nav-link" href="index.php">Home</a>
+                                    <a class="nav-link" href="#"></a>
                                 </li>
                                 <li class="d-none d-lg-block">
-                                    <a class="btn_1" href="admin/login.php">LOGIN</a>
+                                    <a class="btn_1" href="auth/login.php">DOKTER/ADMIN</a>
                                 </li>
                             </ul>
                         </div>
@@ -51,12 +51,11 @@
                     <div class="banner_text">
                         <div class="banner_text_iner">
                             <h1>Sistem Temu Janji Pasien</h1>
-                            <p>Deep created replenish herb without night fruit day earth evening Called his
-                                green were they're fruitful to over Sea bearing sixth Earth face. Them lesser
-                                great you'll second
+                            <p>Selamat Datang. Silahkan Login apabila Anda sudah memiliki akun dan silahkan Register
+                                apabila Anda belum memiliki akun.
                             </p>
-                            <a href="pasien/register_pasien.php" class="btn_2" style="margin-right: 10px;">Register</a>
-                            <a href="pasien/daftar_poli.php" class="btn_2">Daftar Poli</a>
+                            <a href="auth/loginPasien.php" class="btn_2" style="margin-right: 10px;">LOGIN PASIEN</a>
+                            <a href="auth/registerPasien.php" class="btn_2">REGISTER</a>
                             <div class="banner_item">
                                 <div class="single_item">
                                     <img src="assets/home/img/icon/banner_1.svg" alt="">
@@ -78,72 +77,6 @@
         </div>
     </section>
     <!-- banner part start-->
-
-    <!-- feature_part start-->
-    <section class="feature_part padding_top">
-        <div class="container">
-            <div class="row">
-                <div class="col-xl-4 col-md-4 align-self-center">
-                    <div class="single_feature_text ">
-                        <h2>Provide Special
-                            Services</h2>
-                        <p>Third beast two she'd multiply they're form he above do Replenish days said
-                            set doesn't can't subdue air herb lesser dominion saying fruitful given
-                            fifth winged Third beast two she'd multiply they're form he above their
-                            Replenish days said set doesn can'which.</p>
-                        <a href="#" class="btn_2">More service</a>
-                    </div>
-                </div>
-                <div class="col-lg-8 col-md-8">
-                    <div class="feature_item">
-                        <div class="row">
-                            <div class="col-lg-6 col-sm-6">
-                                <div class="single_feature">
-                                    <div class="single_feature_part">
-                                        <span class="single_feature_icon"><img src="assets/home/img/icon/feature_1.svg" alt=""></span>
-                                        <h4>Better Future</h4>
-                                        <p>Darkness multiply rule Which from without life creature blessed
-                                            give moveth moveth seas make day which divided our have.</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-6 col-sm-6">
-                                <div class="single_feature">
-                                    <div class="single_feature_part">
-                                        <span class="single_feature_icon"><img src="assets/home/img/icon/feature_2.svg" alt=""></span>
-                                        <h4>Better Future</h4>
-                                        <p>Darkness multiply rule Which from without life creature blessed
-                                            give moveth moveth seas make day which divided our have.</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-6 col-sm-6">
-                                <div class="single_feature">
-                                    <div class="single_feature_part">
-                                        <span class="single_feature_icon"><img src="assets/home/img/icon/feature_2.svg" alt=""></span>
-                                        <h4>Better Future</h4>
-                                        <p>Darkness multiply rule Which from without life creature blessed
-                                            give moveth moveth seas make day which divided our have.</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-6 col-sm-6">
-                                <div class="single_feature">
-                                    <div class="single_feature_part">
-                                        <span class="single_feature_icon"><img src="assets/home/img/icon/feature_1.svg" alt=""></span>
-                                        <h4>Better Future</h4>
-                                        <p>Darkness multiply rule Which from without life creature blessed
-                                            give moveth moveth seas make day which divided our have.</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <!-- feature_part start-->
 
     <!-- footer part start-->
     <footer class="footer-area">

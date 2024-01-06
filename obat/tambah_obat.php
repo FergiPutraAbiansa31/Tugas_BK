@@ -1,13 +1,12 @@
 <?php
 include '../koneksi.php';
 session_start();
-$id_dokter = $_SESSION['id'];
 $username = $_SESSION['username'];
-$id_poli = $_SESSION['id_poli'];
 
 if ($username == "") {
     header("location:../auth/login.php");
 }
+
 ?>
 <!DOCTYPE html>
 <html lang="zxx">
@@ -41,34 +40,38 @@ if ($username == "") {
                         <div class="white_card card_height_100 mb_30">
                         </div>
                     </div>
-                    <div class="col-md-6">
-                        <div class="white_box QA_section mb_30">
-                            <div class="white_box_tittle list_header">
-                                <h4>Periksa Pasien</h4>
+                    <div class="col-lg-12">
+                        <div class="white_box mb_30">
+                            <div class="row justify-content-center">
+                                <div class="col-lg-6">
+                                    <div class="modal-content cs_modal">
+                                        <div class="modal-header justify-content-center theme_bg_1">
+                                            <h5 class="modal-title text_white">Tambah Obat</h5>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form action="proses_tambah.php" method="post">
+                                                <div class="form-group mb-3">
+                                                    <label for="nama_obat" class="form-label">Nama Obat</label>
+                                                    <input type="text" class="form-control" id="nama_obat" name="nama_obat" required>
+                                                </div>
+                                                <div class="form-group mb-3">
+                                                    <label for="kemasan" class="form-label">Kemasan</label>
+                                                    <input type="text" class="form-control" id="kemasan" name="kemasan" required>
+                                                </div>
+                                                <div class="form-group mb-3">
+                                                    <label for="harga" class="form-label">Harga</label>
+                                                    <input type="number" class="form-control" id="harga" name="harga" required>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-3">
+                                                        <button type="submit" class="btn btn_1 btn-block">Tambah</button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                            <form action="#" method="post">
-                                <div class="form-group mb-3">
-                                    <label for="no_rm font-weight-bold">Nama Pasien</label>
-                                    <input type="text" id="nama" name="nama" class="form-control mb-2" readonly required>
-                                </div>
-                                <div class="form-group mb-3">
-                                    <label for="poli">Tanggal Periksa</label>
-                                    <input type="date" id="tgl_periksa" name="tgl_periksa" class="form-control mb-2" required>
-                                </div>
-                                <div class="form-group mb-3">
-                                    <label>Catatan</label>
-                                    <textarea id="catatan" name="catatan" class="form-control" rows="3" required></textarea>
-                                </div>
-                                <div class="form-group mb-3">
-                                    <label>Obat</label>
-                                    <textarea id="obat" name="obat" class="form-control" rows="3" required></textarea>
-                                </div>
-                                <div class="form-group mb-3">
-                                    <label for="no_rm font-weight-bold">Biaya Periksa</label>
-                                    <input type="text" id="biaya_periksa" name="biaya_periksa" class="form-control mb-2" readonly required>
-                                </div>
-                                <button type="submit" class="btn btn-primary"><i class="ti-save"></i> Simpan</button>
-                            </form>
                         </div>
                     </div>
                 </div>
@@ -102,6 +105,7 @@ if ($username == "") {
     <script src="../assets/vendors/scroll/perfect-scrollbar.min.js"></script>
     <script src="../assets/vendors/scroll/scrollable-custom.js"></script>
     <script src="../assets/js/custom.js"></script>
+    
 </body>
 
 </html>

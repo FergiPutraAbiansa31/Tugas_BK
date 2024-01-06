@@ -1,12 +1,16 @@
 <?php
 include '../koneksi.php';
 session_start();
+$id_dokter = $_SESSION['id'];
 $username = $_SESSION['username'];
+$id_poli = $_SESSION['id_poli'];
 
 if ($username == "") {
     header("location:../auth/login.php");
 }
-$riwayat = mysqli_query($mysqli, "SELECT pasien.nama, alamat, keluhan, catatan FROM pasien JOIN daftar_poli ON pasien.id = daftar_poli.id_pasien JOIN periksa ON daftar_poli.id = periksa.id_daftar_poli");
+$periksa = mysqli_query($mysqli, "SELECT daftar_poli.id, id_pasien, pasien.nama, keluhan, no_antrian, status_periksa, id_jadwal FROM daftar_poli INNER JOIN pasien ON daftar_poli.id_pasien = pasien.id INNER JOIN 
+jadwal_periksa ON daftar_poli.id_jadwal = jadwal_periksa.id INNER JOIN dokter ON jadwal_periksa.id_dokter 
+= dokter.id WHERE dokter.id = '$id_dokter'");
 ?>
 
 <!DOCTYPE html>
@@ -54,62 +58,37 @@ $riwayat = mysqli_query($mysqli, "SELECT pasien.nama, alamat, keluhan, catatan F
                             <div class="white_card_header">
                                 <div class="box_header m-0">
                                     <div class="main-title">
-                                        <h3 class="m-0">Riwayat Pasien</h3>
+                                        <h3 class="m-0">Data Periksa</h3>
                                     </div>
                                 </div>
                             </div>
                             <div class="white_card_body">
                                 <div class="QA_section">
-                                    <div class="white_box_tittle list_header">
-                                        <h4>Riwayat</h4>
-                                        <div class="box_right d-flex lms_block">
-                                            <div class="serach_field_2">
-                                                <div class="search_inner">
-                                                    <form Active="#">
-                                                        <div class="search_field">
-                                                            <input type="text" placeholder="Search content here..." />
-                                                        </div>
-                                                        <button type="submit">
-                                                            <i class="ti-search"></i>
-                                                        </button>
-                                                    </form>
-                                                </div>
-                                            </div>
-                                            <div class="add_button ms-2">
-                                                <button type="button" data-bs-toggle="modal" data-bs-target="#tambah" class="btn_1">
-                                                    Tambah
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
                                     <div class="QA_table mb_30">
                                         <table class="table lms_table_active">
                                             <thead>
                                                 <tr>
                                                     <th scope="col">No</th>
                                                     <th scope="col">Nama</th>
-                                                    <th scope="col">Alamat</th>
                                                     <th scope="col">Keluhan</th>
-                                                    <th scope="col">Catatan</th>
                                                     <th scope="col">Aksi</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <?php
-                                                $no = 1;
-                                                while ($row = mysqli_fetch_array($riwayat)) {
-                                                ?>
+                                                <?php foreach ($periksa as $data) : ?>
                                                     <tr>
-                                                        <td><?php echo $no++ ?></td>
-                                                        <td><?php echo $row['nama'] ?></td>
-                                                        <td><?php echo $row['alamat'] ?></td>
-                                                        <td><?php echo $row['keluhan'] ?></td>
-                                                        <td><?php echo $row['catatan'] ?></td>
+                                                        <td id="id"><?= $data["no_antrian"] ?></td>
+                                                        <td><?= $data["nama"] ?></td>
+                                                        <td><?= $data["keluhan"] ?></td>
                                                         <td>
-                                                            <button type="button" class="btn btn-outline-success rounded-pill mb-3">Detail</button>
+                                                            <?php if ($data["status_periksa"] == 0) { ?>
+                                                                <a href="periksa.php/<?=$data['id_pasien'] ?>" class="status_btn">Periksa</a>
+                                                            <?php } else { ?>
+                                                                <a href="#" class="btn btn-warnig rounded-pill">Edit</a>
+                                                            <?php } ?>
                                                         </td>
                                                     </tr>
-                                                <?php } ?>
+                                                    <?php endforeach; ?> 
                                             </tbody>
 
                                         </table>
@@ -157,7 +136,7 @@ $riwayat = mysqli_query($mysqli, "SELECT pasien.nama, alamat, keluhan, catatan F
     <script src="../assets/vendors/scroll/perfect-scrollbar.min.js"></script>
     <script src="../assets/vendors/scroll/scrollable-custom.js"></script>
     <script src="../assets/js/custom.js"></script>
-
+    
 </body>
 
 </html>

@@ -6,7 +6,8 @@ $username = $_SESSION['username'];
 if ($username == "") {
     header("location:../auth/login.php");
 }
-$riwayat = mysqli_query($mysqli, "SELECT pasien.nama, alamat, keluhan, catatan FROM pasien JOIN daftar_poli ON pasien.id = daftar_poli.id_pasien JOIN periksa ON daftar_poli.id = periksa.id_daftar_poli");
+
+$obat = mysqli_query($mysqli, "SELECT * FROM obat");
 ?>
 
 <!DOCTYPE html>
@@ -54,14 +55,14 @@ $riwayat = mysqli_query($mysqli, "SELECT pasien.nama, alamat, keluhan, catatan F
                             <div class="white_card_header">
                                 <div class="box_header m-0">
                                     <div class="main-title">
-                                        <h3 class="m-0">Riwayat Pasien</h3>
+                                        <h3 class="m-0">Data Obat</h3>
                                     </div>
                                 </div>
                             </div>
                             <div class="white_card_body">
                                 <div class="QA_section">
                                     <div class="white_box_tittle list_header">
-                                        <h4>Riwayat</h4>
+                                        <h4>Obat</h4>
                                         <div class="box_right d-flex lms_block">
                                             <div class="serach_field_2">
                                                 <div class="search_inner">
@@ -76,9 +77,9 @@ $riwayat = mysqli_query($mysqli, "SELECT pasien.nama, alamat, keluhan, catatan F
                                                 </div>
                                             </div>
                                             <div class="add_button ms-2">
-                                                <button type="button" data-bs-toggle="modal" data-bs-target="#tambah" class="btn_1">
+                                                <a href="tambah_obat.php" class="btn_1">
                                                     Tambah
-                                                </button>
+                                                </a>
                                             </div>
                                         </div>
                                     </div>
@@ -87,26 +88,27 @@ $riwayat = mysqli_query($mysqli, "SELECT pasien.nama, alamat, keluhan, catatan F
                                             <thead>
                                                 <tr>
                                                     <th scope="col">No</th>
-                                                    <th scope="col">Nama</th>
-                                                    <th scope="col">Alamat</th>
-                                                    <th scope="col">Keluhan</th>
-                                                    <th scope="col">Catatan</th>
+                                                    <th scope="col">Nama Obat</th>
+                                                    <th scope="col">Kemasan</th>
+                                                    <th scope="col">Harga</th>
                                                     <th scope="col">Aksi</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 <?php
                                                 $no = 1;
-                                                while ($row = mysqli_fetch_array($riwayat)) {
+                                                while ($row = mysqli_fetch_array($obat)) {
                                                 ?>
                                                     <tr>
                                                         <td><?php echo $no++ ?></td>
-                                                        <td><?php echo $row['nama'] ?></td>
-                                                        <td><?php echo $row['alamat'] ?></td>
-                                                        <td><?php echo $row['keluhan'] ?></td>
-                                                        <td><?php echo $row['catatan'] ?></td>
+                                                        <td><?php echo $row['nama_obat'] ?></td>
+                                                        <td><?php echo $row['kemasan'] ?></td>
+                                                        <td><?php echo $row['harga'] ?></td>
                                                         <td>
-                                                            <button type="button" class="btn btn-outline-success rounded-pill mb-3">Detail</button>
+                                                            <a href="edit_obat.php?id=<?php echo $row['id']; ?>" class="btn btn-sm"><i class='fas fa-edit'></i> EDIT</a>
+                                                            <a href="#" class="btn btn-sm" onclick="confirmDelete('<?php echo $row['id']; ?>', '<?php echo $row['nama_obat']; ?>')"><i class='ti-trash'></i>
+                                                                HAPUS
+                                                            </a>
                                                         </td>
                                                     </tr>
                                                 <?php } ?>
@@ -157,7 +159,14 @@ $riwayat = mysqli_query($mysqli, "SELECT pasien.nama, alamat, keluhan, catatan F
     <script src="../assets/vendors/scroll/perfect-scrollbar.min.js"></script>
     <script src="../assets/vendors/scroll/scrollable-custom.js"></script>
     <script src="../assets/js/custom.js"></script>
-
+    <script>
+        function confirmDelete(id, nama_obat) {
+            var confirmDelete = confirm("Anda yakin akan menghapus '" + nama_obat + "'?");
+            if (confirmDelete) {
+                window.location.href = "proses_hapus.php?id=" + id;
+            }
+        }
+    </script>
 </body>
 
 </html>

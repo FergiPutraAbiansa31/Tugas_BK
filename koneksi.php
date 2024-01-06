@@ -1,9 +1,13 @@
-<?php
-$hostName = "localhost";
-$userName = "root";
-$password = "";
-$dbName = "poliklinik";
+<?php 
+$databaseHost = 'localhost';
+$databaseName = 'poliklinik3';
+$databaseUsername = 'root';
+$databasePassword = '';
+ 
+$mysqli = mysqli_connect($databaseHost, 
+    $databaseUsername, $databasePassword, $databaseName);
 
-$conn= new mysqli($hostName,$userName,$password,$dbName);
-
-?>
+// Periksa koneksi
+if (!$mysqli) {
+    die("Koneksi gagal: " . mysqli_connect_error());
+}

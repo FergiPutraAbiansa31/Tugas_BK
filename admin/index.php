@@ -1,3 +1,11 @@
+<?php
+    session_start();
+    $username = $_SESSION['username'];
+
+    if ($username == "") {
+        header("location:../auth/login.php");
+    }
+?>
 <!DOCTYPE html>
 <html lang="zxx">
 
