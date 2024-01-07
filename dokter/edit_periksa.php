@@ -2,23 +2,25 @@
 include '../koneksi.php';
 session_start();
 $username = $_SESSION['username'];
-$idPasien = $_SESSION['id'];
+$id_dokter = $_SESSION['id'];
+$id_poli = $_SESSION['id_poli'];
 
 if ($username == "") {
-    header("location:login.php");
+    header("location:../auth/login.php");
 }
+$id_daftar_poli = $_GET['id'];
+$query = mysqli_query($mysqli, "SELECT daftar_poli.id as id_daftar_poli, id_pasien, pasien.nama as nama, keluhan, no_antrian, status_periksa, id_jadwal 
+FROM daftar_poli
+JOIN pasien ON daftar_poli.id_pasien = pasien.id
+JOIN jadwal_periksa ON daftar_poli.id_jadwal = jadwal_periksa.id
+JOIN dokter ON jadwal_periksa.id_dokter = dokter.id 
+WHERE dokter.id = '$id_dokter' AND daftar_poli.id = '$id_daftar_poli' ");
+$data = mysqli_fetch_assoc($query);
 
-$id = $_GET['id'];
-$getDetail = mysqli_query($mysqli, "SELECT daftar_poli.id as idDaftarPoli, 
-    poli.nama_poli, dokter.nama, jadwal_periksa.hari, DATE_FORMAT(jadwal_periksa.jam_mulai, 
-    '%H:%i') as jamMulai, DATE_FORMAT(jadwal_periksa.jam_selesai, '%H:%i') as jamSelesai, 
-    daftar_poli.no_antrian 
-    FROM daftar_poli 
-    JOIN jadwal_periksa ON daftar_poli.id_jadwal = jadwal_periksa.id 
-    JOIN dokter ON jadwal_periksa.id_dokter = dokter.id 
-    JOIN poli ON dokter.id_poli = poli.id 
-    WHERE daftar_poli.id = '$id'");
-$data = mysqli_fetch_assoc($getDetail);
+$edit_periksa = mysqli_query($mysqli, "SELECT * FROM periksa 
+JOIN daftar_poli ON periksa.id_daftar_poli = daftar_poli.id 
+WHERE daftar_poli.id = '$id_daftar_poli'");
+$edit = mysqli_fetch_assoc($edit_periksa);
 ?>
 <!DOCTYPE html>
 <html lang="zxx">
@@ -26,7 +28,7 @@ $data = mysqli_fetch_assoc($getDetail);
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <title>Detail Pasien</title>
+    <title>Edit Periksa Pasien</title>
     <link rel="icon" href="../assets/home/img/favicon.png" type="image/png">
     <link rel="stylesheet" href="../assets/css/bootstrap1.min.css" />
     <link rel="stylesheet" href="../assets/vendors/themefy_icon/themify-icons.css" />
@@ -56,22 +58,31 @@ $data = mysqli_fetch_assoc($getDetail);
                         <div class="white_box mb_30">
                             <div class="row justify-content-center">
                                 <div class="col-lg-6">
-
                                     <div class="modal-content cs_modal">
                                         <div class="modal-header justify-content-center theme_bg_1">
-                                            <h5 class="modal-title text_white">Detail Daftar Poli</h5>
+                                            <h5 class="modal-title text_white">Edit Periksa Pasien</h5>
                                         </div>
                                         <div class="modal-body">
-                                            <h4 class="text-center">Nomor Antrian</h4>
-                                            <h1 class="text-center"><?php echo $data['no_antrian'] ?></h1>
-                                            <h5 class="text-center"><?php echo $data['nama_poli'] ?></h5>
-                                            <h6 class="text-center"><?php echo $data['hari'] ?>, <?php echo $data['jamMulai'] ?> - <?php echo $data['jamSelesai'] ?></h6>
-                                            <p class="text-center text-muted"><?php echo $data['nama'] ?></p>
-                                            <div class="row">
-                                                <div class="col-md-3">
-                                                    <a href="daftar_poli.php" class="btn btn_1 btn-block">Back</a>
+                                            <form action="proses_edit_periksa.php" method="post">
+                                                <input type="hidden" name="id" value="<?php echo $data['id_daftar_poli'] ?>">
+                                                <div class="form-group mb-3">
+                                                    <label for="hari" class="form-label">Nama Pasien</label>
+                                                    <input type="text" class="form-control" id="nama" name="nama" value="<?php echo $data['nama'] ?>" readonly required>
                                                 </div>
-                                            </div>
+                                                <div class="form-group mb-3">
+                                                    <label for="tgl_periksa" class="form-label">Tanggal Periksa</label>
+                                                    <input type="datetime-local" class="form-control" id="tgl_periksa" name="tgl_periksa" value="<?php echo $edit['tgl_periksa'] ?>" required>
+                                                </div>
+                                                <div class="form-group mb-3">
+                                                    <label for="catatan" class="form-label">Catatan</label>
+                                                    <textarea class="form-control" id="catatan" name="catatan" rows="3" required><?php echo $edit['catatan'] ?></textarea>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-3">
+                                                        <button type="submit" class="btn btn_1 btn-block">Edit</button>
+                                                    </div>
+                                                </div>
+                                            </form>
                                         </div>
                                     </div>
                                 </div>
@@ -109,24 +120,7 @@ $data = mysqli_fetch_assoc($getDetail);
     <script src="../assets/vendors/scroll/perfect-scrollbar.min.js"></script>
     <script src="../assets/vendors/scroll/scrollable-custom.js"></script>
     <script src="../assets/js/custom.js"></script>
-    <script>
-        $(document).ready(function() {
-            $('#poli').on('change', function() {
-                var poliId = $(this).val();
 
-                $.ajax({
-                    type: 'POST',
-                    url: 'getJadwal.php', 
-                    data: {
-                        poliId: poliId
-                    },
-                    success: function(data) {
-                        $('#jadwal').html(data);
-                    }
-                });
-            });
-        });
-    </script>
 </body>
 
 </html>

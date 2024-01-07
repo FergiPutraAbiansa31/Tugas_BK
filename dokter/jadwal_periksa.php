@@ -1,44 +1,24 @@
 <?php
 include '../koneksi.php';
 session_start();
-$id_dokter = $_SESSION['id'];
 $username = $_SESSION['username'];
+$id_dokter = $_SESSION['id'];
 $id_poli = $_SESSION['id_poli'];
 
 if ($username == "") {
-    header("location:login.php");
+    header("location:../auth/login.php");
 }
 
-$query = "SELECT daftar_poli.status_periksa, periksa.id, pasien.alamat, pasien.id as id_pasien, pasien.no_rm, pasien.nama as nama_pasien, daftar_poli.keluhan 
-FROM detail_periksa JOIN periksa ON detail_periksa.id_periksa = periksa.id 
-JOIN daftar_poli ON periksa.id_daftar_poli = daftar_poli.id 
-JOIN pasien ON daftar_poli.id_pasien = pasien.id 
-JOIN jadwal_periksa ON daftar_poli.id_jadwal = jadwal_periksa.id 
-JOIN dokter ON jadwal_periksa.id_dokter = dokter.id 
-WHERE dokter.id = '$id_dokter' AND status_periksa = '1' GROUP BY pasien.id";
-$result = mysqli_query($mysqli, $query);
-$rowCount = mysqli_num_rows($result);
-
-$jadwal = "SELECT jadwal_periksa.status, jadwal_periksa.id, jadwal_periksa.id_dokter, 
+$jadwal = mysqli_query($mysqli, "SELECT jadwal_periksa.status, jadwal_periksa.id, jadwal_periksa.id_dokter, 
 jadwal_periksa.hari, jadwal_periksa.jam_mulai, jadwal_periksa.jam_selesai, 
 dokter.id AS idDokter, dokter.nama, dokter.alamat, dokter.no_hp, dokter.id_poli, 
 poli.id AS idPoli, poli.nama_poli, poli.keterangan 
 FROM jadwal_periksa 
 JOIN dokter ON jadwal_periksa.id_dokter = dokter.id 
 JOIN poli ON dokter.id_poli = poli.id 
-WHERE id_poli = '$id_poli' AND id_dokter='$id_dokter'";
-$result = mysqli_query($mysqli, $jadwal);
-$rowCountJadwal = mysqli_num_rows($result);
-
-$periksa = "SELECT daftar_poli.id as id_daftar_poli, id_pasien, pasien.nama, keluhan, no_antrian, status_periksa, id_jadwal 
-FROM daftar_poli 
-JOIN pasien ON daftar_poli.id_pasien = pasien.id 
-JOIN jadwal_periksa ON daftar_poli.id_jadwal = jadwal_periksa.id 
-JOIN dokter ON jadwal_periksa.id_dokter = dokter.id 
-WHERE dokter.id = '$id_dokter' AND status_periksa = '0'";
-$result = mysqli_query($mysqli, $periksa);
-$rowCountPeriksa = mysqli_num_rows($result);
+WHERE id_poli = '$id_poli' AND id_dokter='$id_dokter'");
 ?>
+
 <!DOCTYPE html>
 <html lang="zxx">
 
@@ -78,32 +58,67 @@ $rowCountPeriksa = mysqli_num_rows($result);
 
         <div class="main_content_iner ">
             <div class="container-fluid p-0 ">
-                <div class="row">
+                <div class="row justify-content-center">
                     <div class="col-lg-12">
-                        <div class="single_element">
-                            <div class="quick_activity">
-                                <div class="row">
-                                    <div class="col-12">
-                                        <div class="quick_activity_wrap">
-                                            <div class="single_quick_activity blue_bg">
-                                                <div class="count_content">
-                                                    <p style="color: white;">Jadwal Periksa</p>
-                                                    <h3 style="color: white;"><?php echo $rowCountJadwal; ?></h3>
-                                                </div>
-                                            </div>
-                                            <div class="single_quick_activity blue_bg">
-                                                <div class="count_content">
-                                                    <p style="color: white;">Periksa Pasien</p>
-                                                    <h3 style="color: white;"><?php echo $rowCountPeriksa; ?></h3>
-                                                </div>
-                                            </div>
-                                            <div class="single_quick_activity blue_bg">
-                                                <div class="count_content">
-                                                    <p style="color: white;">Riwayat Pasien</p>
-                                                    <h3 style="color: white;"><?php echo $rowCount; ?></h3>
-                                                </div>
+                        <div class="white_card card_height_100 mb_30">
+                            <div class="white_card_header">
+                                <div class="box_header m-0">
+                                    <div class="main-title">
+                                        <h3 class="m-0">Jadwal Periksa</h3>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="white_card_body">
+                                <div class="QA_section">
+                                    <div class="white_box_tittle list_header">
+                                        <h4>Jadwal</h4>
+                                        <div class="box_right d-flex lms_block">
+                                            <div class="add_button ms-2">
+                                                <a href="tambah_jadwal.php" class="btn_1">
+                                                    Tambah
+                                                </a>
                                             </div>
                                         </div>
+                                    </div>
+                                    <div class="QA_table mb_30">
+                                        <table class="table lms_table_active">
+                                            <thead>
+                                                <tr>
+                                                    <th scope="col">No</th>
+                                                    <th scope="col">Nama</th>
+                                                    <th scope="col">Hari</th>
+                                                    <th scope="col">Jam Mulai</th>
+                                                    <th scope="col">Jam Selesai</th>
+                                                    <th scope="col">Status</th>
+                                                    <th scope="col">Aksi</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <?php
+                                                $no = 1;
+                                                while ($row = mysqli_fetch_array($jadwal)) {
+                                                ?>
+                                                    <tr>
+                                                        <td><?php echo $no++ ?></td>
+                                                        <td><?php echo $row['nama'] ?></td>
+                                                        <td><?php echo $row['hari'] ?></td>
+                                                        <td><?php echo $row['jam_mulai'] ?></td>
+                                                        <td><?php echo $row['jam_selesai'] ?></td>
+                                                        <td>
+                                                            <?php if ($row['status'] == '1') : ?>
+                                                                <a class="status_btn">Aktif</a>
+                                                            <?php else : ?>
+                                                                <a class="status_btn yellow_btn">Tidak Aktif</a>
+                                                            <?php endif; ?>
+                                                        </td>
+                                                        <td>
+                                                            <a href="edit_jadwal.php?id=<?php echo $row['id']; ?>" class="status_btn yellow_btn"><i class='fas fa-edit'></i> EDIT</a>
+                                                        </td>
+                                                    </tr>
+                                                <?php } ?>
+                                            </tbody>
+
+                                        </table>
                                     </div>
                                 </div>
                             </div>
@@ -148,6 +163,7 @@ $rowCountPeriksa = mysqli_num_rows($result);
     <script src="../assets/vendors/scroll/perfect-scrollbar.min.js"></script>
     <script src="../assets/vendors/scroll/scrollable-custom.js"></script>
     <script src="../assets/js/custom.js"></script>
+
 </body>
 
 </html>

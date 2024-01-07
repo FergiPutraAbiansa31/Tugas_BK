@@ -17,7 +17,7 @@
                     </a>
                 </li>
                 <li class>
-                    <a href="#" aria-expanded="false">
+                    <a href="pasien.php" aria-expanded="false">
                         <div class="icon_menu">
                             <img src="../assets/img/menu-icon/4.svg" alt>
                         </div>
@@ -25,7 +25,7 @@
                     </a>
                 </li>
                 <li class>
-                    <a href="#" aria-expanded="false">
+                    <a href="dokter.php" aria-expanded="false">
                         <div class="icon_menu">
                             <img src="../assets/img/menu-icon/4.svg" alt>
                         </div>
@@ -33,7 +33,7 @@
                     </a>
                 </li>
                 <li class>
-                    <a href="#" aria-expanded="false">
+                    <a href="poli.php" aria-expanded="false">
                         <div class="icon_menu">
                             <img src="../assets/img/menu-icon/4.svg" alt>
                         </div>
@@ -41,7 +41,7 @@
                     </a>
                 </li>
                 <li class>
-                    <a href="../obat/obat.php" aria-expanded="false">
+                    <a href="obat.php" aria-expanded="false">
                         <div class="icon_menu">
                             <img src="../assets/img/menu-icon/4.svg" alt>
                         </div>
@@ -58,11 +58,19 @@
                         </a>
                     </li>
                     <li class>
+                        <a href="jadwal_periksa.php" aria-expanded="false">
+                            <div class="icon_menu">
+                                <img src="../assets/img/menu-icon/4.svg" alt>
+                            </div>
+                            <span>Jadwal Periksa</span>
+                        </a>
+                    </li>
+                    <li class>
                         <a href="data_periksa.php" aria-expanded="false">
                             <div class="icon_menu">
                                 <img src="../assets/img/menu-icon/4.svg" alt>
                             </div>
-                            <span>Periksa</span>
+                            <span>Periksa Pasien</span>
                         </a>
                     </li>
                     <li class>

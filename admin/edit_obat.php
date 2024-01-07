@@ -2,23 +2,16 @@
 include '../koneksi.php';
 session_start();
 $username = $_SESSION['username'];
-$idPasien = $_SESSION['id'];
 
 if ($username == "") {
-    header("location:login.php");
+    header("location:../auth/login.php");
 }
 
-$id = $_GET['id'];
-$getDetail = mysqli_query($mysqli, "SELECT daftar_poli.id as idDaftarPoli, 
-    poli.nama_poli, dokter.nama, jadwal_periksa.hari, DATE_FORMAT(jadwal_periksa.jam_mulai, 
-    '%H:%i') as jamMulai, DATE_FORMAT(jadwal_periksa.jam_selesai, '%H:%i') as jamSelesai, 
-    daftar_poli.no_antrian 
-    FROM daftar_poli 
-    JOIN jadwal_periksa ON daftar_poli.id_jadwal = jadwal_periksa.id 
-    JOIN dokter ON jadwal_periksa.id_dokter = dokter.id 
-    JOIN poli ON dokter.id_poli = poli.id 
-    WHERE daftar_poli.id = '$id'");
-$data = mysqli_fetch_assoc($getDetail);
+if (isset($_GET['id'])) {
+    $id = $_GET['id'];
+    $query = mysqli_query($mysqli, "SELECT * FROM obat WHERE id = '$id'");
+    $obat = mysqli_fetch_array($query);
+}
 ?>
 <!DOCTYPE html>
 <html lang="zxx">
@@ -26,7 +19,7 @@ $data = mysqli_fetch_assoc($getDetail);
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <title>Detail Pasien</title>
+    <title>Edit Obat</title>
     <link rel="icon" href="../assets/home/img/favicon.png" type="image/png">
     <link rel="stylesheet" href="../assets/css/bootstrap1.min.css" />
     <link rel="stylesheet" href="../assets/vendors/themefy_icon/themify-icons.css" />
@@ -56,22 +49,31 @@ $data = mysqli_fetch_assoc($getDetail);
                         <div class="white_box mb_30">
                             <div class="row justify-content-center">
                                 <div class="col-lg-6">
-
                                     <div class="modal-content cs_modal">
                                         <div class="modal-header justify-content-center theme_bg_1">
-                                            <h5 class="modal-title text_white">Detail Daftar Poli</h5>
+                                            <h5 class="modal-title text_white">Edit Obat</h5>
                                         </div>
                                         <div class="modal-body">
-                                            <h4 class="text-center">Nomor Antrian</h4>
-                                            <h1 class="text-center"><?php echo $data['no_antrian'] ?></h1>
-                                            <h5 class="text-center"><?php echo $data['nama_poli'] ?></h5>
-                                            <h6 class="text-center"><?php echo $data['hari'] ?>, <?php echo $data['jamMulai'] ?> - <?php echo $data['jamSelesai'] ?></h6>
-                                            <p class="text-center text-muted"><?php echo $data['nama'] ?></p>
-                                            <div class="row">
-                                                <div class="col-md-3">
-                                                    <a href="daftar_poli.php" class="btn btn_1 btn-block">Back</a>
+                                            <form action="proses_edit.php" method="post">
+                                                <input type="hidden" name="id" value="<?php echo $obat['id']; ?>">
+                                                <div class="form-group mb-3">
+                                                    <label for="nama_obat" class="form-label">Nama Obat</label>
+                                                    <input type="text" class="form-control" id="nama_obat" name="nama_obat" value="<?php echo $obat['nama_obat']; ?>" required>
                                                 </div>
-                                            </div>
+                                                <div class="form-group mb-3">
+                                                    <label for="kemasan" class="form-label">Kemasan</label>
+                                                    <input type="text" class="form-control" id="kemasan" name="kemasan" value="<?php echo $obat['kemasan']; ?>" required>
+                                                </div>
+                                                <div class="form-group mb-3">
+                                                    <label for="harga" class="form-label">Harga</label>
+                                                    <input type="number" class="form-control" id="harga" name="harga" value="<?php echo $obat['harga']; ?>" required>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-3">
+                                                        <button type="submit" class="btn btn_1 btn-block"><i class="ti-save"></i> Ubah</button>
+                                                    </div>
+                                                </div>
+                                            </form>
                                         </div>
                                     </div>
                                 </div>
@@ -109,24 +111,7 @@ $data = mysqli_fetch_assoc($getDetail);
     <script src="../assets/vendors/scroll/perfect-scrollbar.min.js"></script>
     <script src="../assets/vendors/scroll/scrollable-custom.js"></script>
     <script src="../assets/js/custom.js"></script>
-    <script>
-        $(document).ready(function() {
-            $('#poli').on('change', function() {
-                var poliId = $(this).val();
 
-                $.ajax({
-                    type: 'POST',
-                    url: 'getJadwal.php', 
-                    data: {
-                        poliId: poliId
-                    },
-                    success: function(data) {
-                        $('#jadwal').html(data);
-                    }
-                });
-            });
-        });
-    </script>
 </body>
 
 </html>

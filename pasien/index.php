@@ -1,10 +1,21 @@
 <?php
-    session_start();
-    $username = $_SESSION['username'];
 
-    if ($username == "") {
-        header("location:login.php");
-    }
+include '../koneksi.php';
+session_start();
+$username = $_SESSION['username'];
+
+if ($username == "") {
+    header("location:login.php");
+}
+$idPasien = $_SESSION['id'];
+$query = "SELECT daftar_poli.id as idDaftarPoli, poli.nama_poli, dokter.nama, jadwal_periksa.hari, jadwal_periksa.jam_mulai, jadwal_periksa.jam_selesai, daftar_poli.no_antrian 
+FROM daftar_poli JOIN jadwal_periksa ON daftar_poli.id_jadwal = jadwal_periksa.id 
+JOIN dokter ON jadwal_periksa.id_dokter = dokter.id 
+JOIN poli ON dokter.id_poli = poli.id 
+WHERE daftar_poli.id_pasien = '$idPasien'";
+
+$result = mysqli_query($mysqli, $query);
+$rowCount = mysqli_num_rows($result);
 ?>
 <!DOCTYPE html>
 <html lang="zxx">
@@ -52,36 +63,11 @@
                                 <div class="row">
                                     <div class="col-12">
                                         <div class="quick_activity_wrap">
-                                            <div class="single_quick_activity">
+                                            <div class="single_quick_activity blue_bg">
                                                 <div class="count_content">
-                                                    <p>Revenue</p>
-                                                    <h3>$<span class="counter">35000</span></h3>
+                                                    <p style="color: white;">Riwayat Periksa</p>
+                                                    <h3 style="color: white;"><?php echo $rowCount; ?></h3>
                                                 </div>
-                                                <a href="#" class="notification_btn">Today</a>
-                                            </div>
-
-                                            <div class="single_quick_activity">
-                                                <div class="count_content">
-                                                    <p>Orders</p>
-                                                    <h3><span class="counter">35000</span></h3>
-                                                </div>
-                                                <a href="#" class="notification_btn yellow_btn">This Week</a>
-                                            </div>
-
-                                            <div class="single_quick_activity">
-                                                <div class="count_content">
-                                                    <p>Leads</p>
-                                                    <h3>$<span class="counter">50000</span></h3>
-                                                </div>
-                                                <a href="#" class="notification_btn green_btn">This Month</a>
-                                            </div>
-
-                                            <div class="single_quick_activity">
-                                                <div class="count_content">
-                                                    <p>Lead Conversion Rate</p>
-                                                    <h3><span class="counter">50</span> %</h3>
-                                                </div>
-                                                <a href="#" class="notification_btn violate_btn">Anual</a>
                                             </div>
                                         </div>
                                     </div>

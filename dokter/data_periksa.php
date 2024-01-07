@@ -8,9 +8,12 @@ $id_poli = $_SESSION['id_poli'];
 if ($username == "") {
     header("location:../auth/login.php");
 }
-$periksa = mysqli_query($mysqli, "SELECT daftar_poli.id, id_pasien, pasien.nama, keluhan, no_antrian, status_periksa, id_jadwal FROM daftar_poli INNER JOIN pasien ON daftar_poli.id_pasien = pasien.id INNER JOIN 
-jadwal_periksa ON daftar_poli.id_jadwal = jadwal_periksa.id INNER JOIN dokter ON jadwal_periksa.id_dokter 
-= dokter.id WHERE dokter.id = '$id_dokter'");
+$periksa = mysqli_query($mysqli, "SELECT daftar_poli.id as id_daftar_poli, id_pasien, pasien.nama, keluhan, no_antrian, status_periksa, id_jadwal 
+FROM daftar_poli 
+JOIN pasien ON daftar_poli.id_pasien = pasien.id 
+JOIN jadwal_periksa ON daftar_poli.id_jadwal = jadwal_periksa.id 
+JOIN dokter ON jadwal_periksa.id_dokter = dokter.id 
+WHERE dokter.id = '$id_dokter'");
 ?>
 
 <!DOCTYPE html>
@@ -82,13 +85,13 @@ jadwal_periksa ON daftar_poli.id_jadwal = jadwal_periksa.id INNER JOIN dokter ON
                                                         <td><?= $data["keluhan"] ?></td>
                                                         <td>
                                                             <?php if ($data["status_periksa"] == 0) { ?>
-                                                                <a href="periksa.php/<?=$data['id_pasien'] ?>" class="status_btn">Periksa</a>
+                                                                <a href="periksa.php?id=<?= $data['id_daftar_poli'] ?>" class="status_btn"><i class="fa fa-stethoscope"></i> Periksa</a>
                                                             <?php } else { ?>
-                                                                <a href="#" class="btn btn-warnig rounded-pill">Edit</a>
+                                                                <a href="edit_periksa.php?id=<?= $data['id_daftar_poli'] ?>" class="status_btn yellow_btn"><i class="fa fa-edit"></i> Edit</a>
                                                             <?php } ?>
                                                         </td>
                                                     </tr>
-                                                    <?php endforeach; ?> 
+                                                <?php endforeach; ?>
                                             </tbody>
 
                                         </table>
@@ -136,7 +139,7 @@ jadwal_periksa ON daftar_poli.id_jadwal = jadwal_periksa.id INNER JOIN dokter ON
     <script src="../assets/vendors/scroll/perfect-scrollbar.min.js"></script>
     <script src="../assets/vendors/scroll/scrollable-custom.js"></script>
     <script src="../assets/js/custom.js"></script>
-    
+
 </body>
 
 </html>

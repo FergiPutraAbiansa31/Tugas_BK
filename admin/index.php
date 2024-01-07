@@ -1,10 +1,22 @@
 <?php
-    session_start();
-    $username = $_SESSION['username'];
+include '../koneksi.php';
+session_start();
+$username = $_SESSION['username'];
 
-    if ($username == "") {
-        header("location:../auth/login.php");
-    }
+if ($username == "") {
+    header("location:../auth/login.php");
+}
+function countTableRows($table, $mysqli)
+{
+    $query = "SELECT COUNT(*) as count FROM $table";
+    $result = mysqli_query($mysqli, $query);
+    $row = mysqli_fetch_assoc($result);
+    return $row['count'];
+}
+$countPasien = countTableRows('pasien', $mysqli);
+$countDokter = countTableRows('dokter', $mysqli);
+$countPoli = countTableRows('poli', $mysqli);
+$countObat = countTableRows('obat', $mysqli);
 ?>
 <!DOCTYPE html>
 <html lang="zxx">
@@ -51,36 +63,32 @@
                                 <div class="row">
                                     <div class="col-12">
                                         <div class="quick_activity_wrap">
-                                            <div class="single_quick_activity">
+                                            <div class="single_quick_activity blue_bg">
                                                 <div class="count_content">
-                                                    <p>Revenue</p>
-                                                    <h3>$<span class="counter">35000</span></h3>
+                                                    <p style="color: white;">Pasien</p>
+                                                    <h3 style="color: white;"><?php echo $countPasien; ?></h3>
                                                 </div>
-                                                <a href="#" class="notification_btn">Today</a>
                                             </div>
 
-                                            <div class="single_quick_activity">
+                                            <div class="single_quick_activity blue_bg">
                                                 <div class="count_content">
-                                                    <p>Orders</p>
-                                                    <h3><span class="counter">35000</span></h3>
+                                                    <p style="color: white;">Dokter</p>
+                                                    <h3 style="color: white;"><?php echo $countDokter; ?></h3>
                                                 </div>
-                                                <a href="#" class="notification_btn yellow_btn">This Week</a>
                                             </div>
 
-                                            <div class="single_quick_activity">
+                                            <div class="single_quick_activity blue_bg">
                                                 <div class="count_content">
-                                                    <p>Leads</p>
-                                                    <h3>$<span class="counter">50000</span></h3>
+                                                    <p style="color: white;">Poli</p>
+                                                    <h3 style="color: white;"><?php echo $countPoli; ?></h3>
                                                 </div>
-                                                <a href="#" class="notification_btn green_btn">This Month</a>
                                             </div>
 
-                                            <div class="single_quick_activity">
+                                            <div class="single_quick_activity blue_bg">
                                                 <div class="count_content">
-                                                    <p>Lead Conversion Rate</p>
-                                                    <h3><span class="counter">50</span> %</h3>
+                                                    <p style="color: white;">Obat</p>
+                                                    <h3 style="color: white;"><?php echo $countObat; ?></h3>
                                                 </div>
-                                                <a href="#" class="notification_btn violate_btn">Anual</a>
                                             </div>
                                         </div>
                                     </div>

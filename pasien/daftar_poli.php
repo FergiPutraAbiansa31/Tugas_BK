@@ -122,9 +122,9 @@ if ($username == "") {
                                         <?php
                                         $no = 1;
                                         $queryObat = "SELECT daftar_poli.id as idDaftarPoli, poli.nama_poli, dokter.nama, jadwal_periksa.hari, jadwal_periksa.jam_mulai, jadwal_periksa.jam_selesai, daftar_poli.no_antrian 
-                                        FROM daftar_poli INNER JOIN jadwal_periksa ON daftar_poli.id_jadwal = jadwal_periksa.id 
-                                        INNER JOIN dokter ON jadwal_periksa.id_dokter = dokter.id 
-                                        INNER JOIN poli ON dokter.id_poli = poli.id 
+                                        FROM daftar_poli JOIN jadwal_periksa ON daftar_poli.id_jadwal = jadwal_periksa.id 
+                                        JOIN dokter ON jadwal_periksa.id_dokter = dokter.id 
+                                        JOIN poli ON dokter.id_poli = poli.id 
                                         WHERE daftar_poli.id_pasien = '$idPasien'";
                                         $resultObat = mysqli_query($mysqli, $queryObat);
 

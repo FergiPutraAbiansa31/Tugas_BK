@@ -9,7 +9,6 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
     $result = mysqli_query($mysqli, $query);
     if (mysqli_num_rows($result) > 0) {
         $data = mysqli_fetch_assoc($result);
-        // mengecek username dan password pasien
         $_SESSION['id'] = $data['id'];
         $_SESSION['username'] = $data['nama'];
         $_SESSION['password'] = $data['password'];

@@ -2,23 +2,13 @@
 include '../koneksi.php';
 session_start();
 $username = $_SESSION['username'];
-$idPasien = $_SESSION['id'];
+$id_dokter = $_SESSION['id'];
+$id_poli = $_SESSION['id_poli'];
 
 if ($username == "") {
-    header("location:login.php");
+    header("location:../auth/login.php");
 }
 
-$id = $_GET['id'];
-$getDetail = mysqli_query($mysqli, "SELECT daftar_poli.id as idDaftarPoli, 
-    poli.nama_poli, dokter.nama, jadwal_periksa.hari, DATE_FORMAT(jadwal_periksa.jam_mulai, 
-    '%H:%i') as jamMulai, DATE_FORMAT(jadwal_periksa.jam_selesai, '%H:%i') as jamSelesai, 
-    daftar_poli.no_antrian 
-    FROM daftar_poli 
-    JOIN jadwal_periksa ON daftar_poli.id_jadwal = jadwal_periksa.id 
-    JOIN dokter ON jadwal_periksa.id_dokter = dokter.id 
-    JOIN poli ON dokter.id_poli = poli.id 
-    WHERE daftar_poli.id = '$id'");
-$data = mysqli_fetch_assoc($getDetail);
 ?>
 <!DOCTYPE html>
 <html lang="zxx">
@@ -56,22 +46,47 @@ $data = mysqli_fetch_assoc($getDetail);
                         <div class="white_box mb_30">
                             <div class="row justify-content-center">
                                 <div class="col-lg-6">
-
                                     <div class="modal-content cs_modal">
                                         <div class="modal-header justify-content-center theme_bg_1">
-                                            <h5 class="modal-title text_white">Detail Daftar Poli</h5>
+                                            <h5 class="modal-title text_white">Tambah Jadwal</h5>
                                         </div>
                                         <div class="modal-body">
-                                            <h4 class="text-center">Nomor Antrian</h4>
-                                            <h1 class="text-center"><?php echo $data['no_antrian'] ?></h1>
-                                            <h5 class="text-center"><?php echo $data['nama_poli'] ?></h5>
-                                            <h6 class="text-center"><?php echo $data['hari'] ?>, <?php echo $data['jamMulai'] ?> - <?php echo $data['jamSelesai'] ?></h6>
-                                            <p class="text-center text-muted"><?php echo $data['nama'] ?></p>
-                                            <div class="row">
-                                                <div class="col-md-3">
-                                                    <a href="daftar_poli.php" class="btn btn_1 btn-block">Back</a>
+                                            <form action="proses_tambah_jadwal.php" method="post">
+                                                <div class="form-group mb-3">
+                                                    <label for="hari" class="form-label">Hari</label>
+                                                    <select class="form-control" id="hari" name="hari">
+                                                        <option value="">-- Pilih Hari --</option>
+                                                        <?php
+                                                        $jadwal_hari = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+                                                        foreach ($jadwal_hari as $hari) {
+                                                        ?>
+                                                            <option value="<?php echo $hari ?>">
+                                                                <?php echo $hari ?></option>
+                                                        <?php } ?>
+                                                    </select>
                                                 </div>
-                                            </div>
+                                                <div class="form-group mb-3">
+                                                    <label for="jam_mulai" class="form-label">Jam Mulai</label>
+                                                    <input type="time" class="form-control" id="jam_mulai" name="jam_mulai" required>
+                                                </div>
+                                                <div class="form-group mb-3">
+                                                    <label for="jam_selesai" class="form-label">Jam Selesai</label>
+                                                    <input type="time" class="form-control" id="jam_selesai" name="jam_selesai" required>
+                                                </div>
+                                                <div class="form-group mb-3">
+                                                    <label for="status" class="form-label">Status</label>
+                                                    <select class="form-control" name="status" id="status">
+                                                        <option value="">-- Pilih Status --</option>
+                                                        <option value="1">Aktif</option>
+                                                        <option value="0">Tidak Aktif</option>
+                                                    </select>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-3">
+                                                        <button type="submit" class="btn btn_1 btn-block">Tambah</button>
+                                                    </div>
+                                                </div>
+                                            </form>
                                         </div>
                                     </div>
                                 </div>
@@ -109,24 +124,7 @@ $data = mysqli_fetch_assoc($getDetail);
     <script src="../assets/vendors/scroll/perfect-scrollbar.min.js"></script>
     <script src="../assets/vendors/scroll/scrollable-custom.js"></script>
     <script src="../assets/js/custom.js"></script>
-    <script>
-        $(document).ready(function() {
-            $('#poli').on('change', function() {
-                var poliId = $(this).val();
 
-                $.ajax({
-                    type: 'POST',
-                    url: 'getJadwal.php', 
-                    data: {
-                        poliId: poliId
-                    },
-                    success: function(data) {
-                        $('#jadwal').html(data);
-                    }
-                });
-            });
-        });
-    </script>
 </body>
 
 </html>

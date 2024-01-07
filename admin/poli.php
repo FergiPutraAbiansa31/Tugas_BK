@@ -1,20 +1,13 @@
 <?php
 include '../koneksi.php';
 session_start();
-$id_dokter = $_SESSION['id'];
 $username = $_SESSION['username'];
-$id_poli = $_SESSION['id_poli'];
 
 if ($username == "") {
     header("location:../auth/login.php");
 }
-$query = mysqli_query($mysqli, "SELECT daftar_poli.status_periksa, periksa.id, pasien.alamat, pasien.id as id_pasien, pasien.no_rm, pasien.nama as nama_pasien, daftar_poli.keluhan 
-FROM detail_periksa JOIN periksa ON detail_periksa.id_periksa = periksa.id 
-JOIN daftar_poli ON periksa.id_daftar_poli = daftar_poli.id 
-JOIN pasien ON daftar_poli.id_pasien = pasien.id 
-JOIN jadwal_periksa ON daftar_poli.id_jadwal = jadwal_periksa.id 
-JOIN dokter ON jadwal_periksa.id_dokter = dokter.id 
-WHERE dokter.id = '$id_dokter' AND status_periksa = '1' GROUP BY pasien.id");
+
+$poli = mysqli_query($mysqli, "SELECT * FROM poli");
 ?>
 
 <!DOCTYPE html>
@@ -62,42 +55,62 @@ WHERE dokter.id = '$id_dokter' AND status_periksa = '1' GROUP BY pasien.id");
                             <div class="white_card_header">
                                 <div class="box_header m-0">
                                     <div class="main-title">
-                                        <h3 class="m-0">Riwayat Pasien</h3>
+                                        <h3 class="m-0">Data Poli</h3>
                                     </div>
                                 </div>
                             </div>
                             <div class="white_card_body">
                                 <div class="QA_section">
+                                    <div class="white_box_tittle list_header">
+                                        <h4>Poli</h4>
+                                        <div class="box_right d-flex lms_block">
+                                            <div class="serach_field_2">
+                                                <div class="search_inner">
+                                                    <form Active="#">
+                                                        <div class="search_field">
+                                                            <input type="text" placeholder="Search content here..." />
+                                                        </div>
+                                                        <button type="submit">
+                                                            <i class="ti-search"></i>
+                                                        </button>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                            <div class="add_button ms-2">
+                                                <a href="tambah_poli.php" class="btn_1">
+                                                    Tambah
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
                                     <div class="QA_table mb_30">
                                         <table class="table lms_table_active">
                                             <thead>
                                                 <tr>
                                                     <th scope="col">No</th>
-                                                    <th scope="col">Nama</th>
-                                                    <th scope="col">Alamat</th>
-                                                    <th scope="col">No RM</th>
-                                                    <th scope="col">Keluhan</th>
+                                                    <th scope="col">Nama Poli</th>
+                                                    <th scope="col">Keterangan</th>
                                                     <th scope="col">Aksi</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 <?php
                                                 $no = 1;
-                                                while ($riwayat = mysqli_fetch_array($query)) {
+                                                while ($row = mysqli_fetch_array($poli)) {
                                                 ?>
                                                     <tr>
                                                         <td><?php echo $no++ ?></td>
-                                                        <td><?php echo $riwayat['nama_pasien'] ?></td>
-                                                        <td><?php echo $riwayat['alamat'] ?></td>
-                                                        <td><?php echo $riwayat['no_rm'] ?></td>
-                                                        <td><?php echo $riwayat['keluhan'] ?></td>
+                                                        <td><?php echo $row['nama_poli'] ?></td>
+                                                        <td><?php echo $row['keterangan'] ?></td>
                                                         <td>
-                                                            <a href="detail_riwayat.php?id=<?= $riwayat['id_pasien'] ?>" class="status_btn"><i class="ti-eye"> Detail</button>
+                                                            <a href="edit_poli.php?id=<?php echo $row['id']; ?>" class="btn btn-sm"><i class='fas fa-edit'></i> EDIT</a>
+                                                            <a href="#" class="btn btn-sm" onclick="confirmDelete('<?php echo $row['id']; ?>', '<?php echo $row['nama_poli']; ?>')"><i class='ti-trash'></i>
+                                                                HAPUS
+                                                            </a>
                                                         </td>
                                                     </tr>
                                                 <?php } ?>
                                             </tbody>
-
                                         </table>
                                     </div>
                                 </div>
@@ -143,7 +156,14 @@ WHERE dokter.id = '$id_dokter' AND status_periksa = '1' GROUP BY pasien.id");
     <script src="../assets/vendors/scroll/perfect-scrollbar.min.js"></script>
     <script src="../assets/vendors/scroll/scrollable-custom.js"></script>
     <script src="../assets/js/custom.js"></script>
-
+    <script>
+        function confirmDelete(id, nama_poli) {
+            var confirmDelete = confirm("Anda yakin akan menghapus '" + nama_poli + "'?");
+            if (confirmDelete) {
+                window.location.href = "proses_hapus_poli.php?id=" + id;
+            }
+        }
+    </script>
 </body>
 
 </html>
